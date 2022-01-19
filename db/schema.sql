@@ -13,6 +13,9 @@ CREATE TABLE role (
     id INT NOT NULL,
     title VARCHAR(30) NOT NULL,
     -- salary DECIMAL ,
+        -- The syntax is DECIMAL(M,D)
+        -- M - total length
+        -- D - digits right of the decimal point
     department_id INT NOT NULL,
     PRIMARY KEY (id)
 );
