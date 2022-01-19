@@ -10,6 +10,7 @@ const db = mysql.createConnection({
 }).promise();
 
 
+// ALL QUESTIONS - ask what action the user wants to take
 const allQuestions = () => {
     inquirer
         .prompt([
@@ -22,7 +23,7 @@ const allQuestions = () => {
         ])
         .then(answers => {
             if(answers.home === "View all departments"){
-
+                viewAllDepartments();
             } else if(answers.home === "View all roles"){
 
             } else if(answers.home === "View all employees"){
@@ -36,5 +37,18 @@ const allQuestions = () => {
             } else if (answers.home === "Update an employee role"){
 
             }
-        })
+        });
+};
+
+const viewAllDepartments = () => {
+
+    db.query(`SELECT id, name FROM department`)
+};
+
+const viewAllRoles = () => {
+
+};
+
+const viewAllEmployees = () => {
+
 };
