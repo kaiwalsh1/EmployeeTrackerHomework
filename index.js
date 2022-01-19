@@ -1,6 +1,7 @@
 const cTable = require('console.table');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+const util = require('util');
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -9,6 +10,7 @@ const db = mysql.createConnection({
     database: 'cms_db',
 }).promise();
 
+const readFromFile = util.promisify(db.query);
 
 // ALL QUESTIONS - ask what action the user wants to take
 const allQuestions = () => {
@@ -42,7 +44,6 @@ const allQuestions = () => {
 
 const viewAllDepartments = () => {
 
-    db.query(`SELECT id, name FROM department`)
 };
 
 const viewAllRoles = () => {
