@@ -47,11 +47,12 @@ This application uses Node.js, Inquirer, console.table, and MySql
 
 ## Usage
 
+## Credits
 
 
 ## Walkthrough Video
 ![]()
 
 ## Sources
-
+Google, tutor, help from CJ Sanders
 

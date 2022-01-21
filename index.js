@@ -9,13 +9,13 @@ const db = mysql.createConnection({
     user: 'root',
     password: 'password',
     database: 'cms_db',
-}).promise();
+});
 
-const viewTable = ( table ) => {
-	console.log( '\n' );
-	console.table( table );
-	console.log( '\n' );
-};
+// const viewTable = ( table ) => {
+// 	console.log( '\n' );
+// 	console.table( table );
+// 	console.log( '\n' );
+// };
 
 // ALL QUESTIONS - ask what action the user wants to take
 const allQuestions = () => {
@@ -45,7 +45,7 @@ const allQuestions = () => {
             // } else if (answers.home === "Update an employee role"){
 
             // }
-        })
+        });
 };
 
 const viewAllDepartments = () => {
@@ -57,28 +57,40 @@ const viewAllDepartments = () => {
 };
 
 
-// const viewAllRoles = () => {
+const viewAllRoles = () => {
 // db query request to get all the things from that
-// console.table(result)
+    db.query("SELECT * FROM role;", (err, result) => {
+        if (err) { console.log(err) }
+        console.table(result)
+        allQuestions();
+    });
+};
 
-// };
+// const getAllTodosQuery = 'SELECT todos.id, task, completed, userId, username 
+// FROM todos LEFT JOIN users ON todos.userId = users.id;';
 
 // const viewAllEmployees = () => {
+//     db.query(`SELECT * FROM employee;`, (err, result) => {
 
+//     })
+// allQuestions();
 // };
 
 // const addDepartment = () => {
 
+    // allQuestions();
 // };
 
 // const addRole = () => {
-
+// allQuestions();
 // };
 
 // const addEmployee = () => {
-
+// allQuestions();
 // };
 
 // const updateEmployeeRole = () => {
-
+// allQuestions();
 // };
+
+allQuestions();
