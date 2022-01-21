@@ -1,4 +1,5 @@
 const cTable = require('console.table');
+const res = require('express/lib/response');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const util = require('util');
@@ -28,10 +29,10 @@ const allQuestions = () => {
             },
         ])
         .then(answers => {
-            console.log(answers);
-            // if(answers.home === "View all departments"){
-            //     viewAllDepartments();
-            // } else if(answers.home === "View all roles"){
+            if(answers.home === "View all departments"){
+                viewAllDepartments();
+            } 
+            // else if(answers.home === "View all roles"){
 
             // } else if(answers.home === "View all employees"){
 
@@ -44,20 +45,21 @@ const allQuestions = () => {
             // } else if (answers.home === "Update an employee role"){
 
             // }
-        });
+        })
 };
 
-const viewAllDepartments = async () => {
-    try {
-        const table = await db.query(queries.department);
-        viewTable(table);
-        return 
-    } catch (e) {
-        console.log(e);
-    }
+const viewAllDepartments = () => {
+    db.query("SELECT * FROM department;", (err, result) => {
+        if (err) { console.log(err) }
+        console.table(result)
+        allQuestions();
+    });
 };
+
 
 // const viewAllRoles = () => {
+// db query request to get all the things from that
+// console.table(result)
 
 // };
 
