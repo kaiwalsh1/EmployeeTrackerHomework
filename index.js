@@ -33,8 +33,7 @@ const allQuestions = () => {
                 viewAllDepartments();
             } else if(answers.home === "View all roles"){
                 viewAllRoles();
-            } 
-            else if(answers.home === "View all employees"){
+            } else if(answers.home === "View all employees"){
                 viewAllEmployees();
             } else if(answers.home === "Add a department"){
                 addDepartment();
@@ -105,11 +104,16 @@ const addDepartment = () => {
 };
 
 // addRole function
-const addRole = () => {
-    db.query(`SELECT * FROM department;`, (err, result) => {
-        if (err) { console.log(err) }
-        result.forEach()
-    })
+const addRole = async () => {
+    let roles = [];
+    let choices =
+        db.promise().query(`SELECT * FROM department;`)
+            .then(results => {
+                results[0].forEach(result => {
+                    roles.push(result.name);
+                });
+            })
+            .catch(err => console.log(err));
     inquirer
     .prompt([
         {
@@ -126,7 +130,7 @@ const addRole = () => {
             type: 'list',
             message: 'Which department does the role belong to?',
             // add choices or pull from 
-            choices: [],
+            choices: roles,
             name: 'addToDept'
         }
     ])
@@ -161,13 +165,13 @@ const addEmployee = () => {
         {
             type: 'list',
             message: 'What is the employee\'s role?',
-            choices: ,
+            choices: [],
             name: 'addEmployeeRole'
         },
         {
             type: 'list',
             message: 'Who is the employee\'s manager?',
-            choices: ,
+            choices: [],
             name: 'addEmployeeMng'
         },
     ])
@@ -193,13 +197,13 @@ const updateEmployeeRole = () => {
         {
             type: 'list',
             message: 'Which employee\'s role do you want to update?',
-            choices: ,
+            choices: [],
             name: 'updateEmployeeRole'
         },
         {
             type: 'list',
             message: 'Which role do you want to assign the selected employee?',
-            choices: ,
+            choices: [],
             name: 'updateRoleOfEmployee'
         },
     ])
