@@ -38,14 +38,13 @@ const allQuestions = () => {
                 viewAllEmployees();
             } else if(answers.home === "Add a department"){
                 addDepartment();
+            } else if(answers.home === "Add a role"){
+                addRole();
+            } else if(answers.home === "Add an employee"){
+                addEmployee();
+            } else if (answers.home === "Update an employee role"){
+                updateEmployeeRole();
             }
-        //  else if(answers.home === "Add a role"){
-                // addRole();
-            // } else if(answers.home === "Add an employee"){
-                // addEmployee();
-            // } else if (answers.home === "Update an employee role"){
-                // updateEmployeeRole();
-            // }
         });
 };
 
@@ -106,19 +105,114 @@ const addDepartment = () => {
 };
 
 // addRole function
-// const addRole = () => {
-// allQuestions();
-// };
+const addRole = () => {
+    db.query(`SELECT * FROM department;`, (err, result) => {
+        if (err) { console.log(err) }
+        result.forEach()
+    })
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            message: 'What is the name of the role?',
+            name: 'addRole'
+        },
+        {
+            type: 'input',
+            message: 'What is the salary of the role?',
+            name: 'addSalary'
+        },
+        {
+            type: 'list',
+            message: 'Which department does the role belong to?',
+            // add choices or pull from 
+            choices: [],
+            name: 'addToDept'
+        }
+    ])
+    .then(answers => {
+        const newRole = answers.addRole;
+        const newRoleSalary = answers.addSalary;
+        const addRoleToDept = answers.addToDept;
+        db.query(`INSERT INTO role (name, salary, department_id) VALUES(?, ?, ?);`, [newRole, newRoleSalary, newRoleToDept], (err, result) => {
+            if(err) { console.log(err) }
+        });
+        allQuestions();
+    });
+};
 
 // addEmployee function
-// const addEmployee = () => {
-// allQuestions();
-// };
+const addEmployee = () => {
+    db.query(`SELECT * FROM role;`, (err, result) => {
+        if(err) { console.log(err) }
+    })
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            message: 'What is the employee\'s first name?',
+            name: 'addFirstName'
+        },
+        {
+            type: 'input',
+            message: 'What is the employee\'s last name?',
+            name: 'addLastName'
+        },
+        {
+            type: 'list',
+            message: 'What is the employee\'s role?',
+            choices: ,
+            name: 'addEmployeeRole'
+        },
+        {
+            type: 'list',
+            message: 'Who is the employee\'s manager?',
+            choices: ,
+            name: 'addEmployeeMng'
+        },
+    ])
+    .then(answers => {
+        const newEmployee = answers.addFirstName;
+        const newEmployeeLastName = answers.addLastName;
+        const newEmployeeRole = answers.addEmployeeRole;
+        const newEmployeeManager = answers.addEmployeeMng;
+        db.query(`INSERT INTO employee (name) VALUES(?);`, [], (err, result) => {
+            if(err) { console.log(err) }
+        });
+        allQuestions();
+    });
+};
 
 // updateEmployeeRole
-// const updateEmployeeRole = () => {
-// allQuestions();
-// };
+const updateEmployeeRole = () => {
+    db.query(`SELECT * FROM employee;`, (err, result) => {
+        if(err) { console.log(err) }
+    })
+    inquirer
+    .prompt([
+        {
+            type: 'list',
+            message: 'Which employee\'s role do you want to update?',
+            choices: ,
+            name: 'updateEmployeeRole'
+        },
+        {
+            type: 'list',
+            message: 'Which role do you want to assign the selected employee?',
+            choices: ,
+            name: 'updateRoleOfEmployee'
+        },
+    ])
+    .then(answers => {
+        const updatedEmployee = answers.updateEmployeeRole;
+        const updatedEmployeeRole = answers.updateRoleOfEmployee;
+        db.query(`INSERT INTO employee (name) VALUES(?);`, [updatedEmployee, updatedEmployeeRole], (err, result) => {
+            if(err) { console.log(err) }
+        });
+        allQuestions();
+    });
+
+};
 
 allQuestions();
 
