@@ -36,10 +36,10 @@ const allQuestions = () => {
             } 
             else if(answers.home === "View all employees"){
                 viewAllEmployees();
-            } 
-            // else if(answers.home === "Add a department"){
-                // addDepartment();
-            // } else if(answers.home === "Add a role"){
+            } else if(answers.home === "Add a department"){
+                addDepartment();
+            }
+        //  else if(answers.home === "Add a role"){
                 // addRole();
             // } else if(answers.home === "Add an employee"){
                 // addEmployee();
@@ -61,7 +61,7 @@ const viewAllDepartments = () => {
 // viewAllRoles function
 const viewAllRoles = () => {
 // db query request to get all the things from that
-    db.query("SELECT R.id, R.title, R.salary, D.name department FROM role R INNER JOIN department D ON R.department_id = D.id;", (err, result) => {
+    db.query("SELECT R.id, R.title, R.salary, D.name AS department FROM role R INNER JOIN department D ON R.department_id = D.id;", (err, result) => {
         if (err) { console.log(err) }
         console.table(result)
         allQuestions();
@@ -70,13 +70,15 @@ const viewAllRoles = () => {
 
 // viewAllEmployees function
 const viewAllEmployees = () => {
-    db.query(`SELECT E.id, E.first_name, E.last_name, R.title, D.name department, R.salary, E.manager_id 
+    db.query(`SELECT E.id, E.first_name AS 'First Name', E.last_name AS 'Last Name', R.title, D.name department, R.salary,
+        CONCAT(manager_id.first_name, " ", manager_id.last_name) AS manager FROM employee
         FROM employee E 
         INNER JOIN role R ON E.role_id = R.id
         INNER JOIN department D ON R.department_id = D.id
-        ;
+        INNER JOIN employee manager ON employee.manager_id = manager.id;
         `
-        // still need to add manager name from 
+// still need to add manager name from employee Table
+//         CONCAT(manager.first_name, " ", manager.last_name) AS manager_id FROM employee
         , (err, result) => {
         if (err) { console.log(err) }
         console.table(result)
@@ -85,19 +87,35 @@ const viewAllEmployees = () => {
 };
 
 // addDepartment function
-// const addDepartment = () => {
+const addDepartment = () => {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                message: 'What is the name of the department?',
+                name: 'addDept'
+            }
+        ])
+        .then(answers => {
+            const newDepartment = answers.addDept;
+            db.query(`INSERT INTO department (name) VALUES(?);`, [newDepartment], (err, result) => {
+                if(err) { console.log(err) }
+            });
+            allQuestions();
+        });
+};
 
-    // allQuestions();
-// };
-
+// addRole function
 // const addRole = () => {
 // allQuestions();
 // };
 
+// addEmployee function
 // const addEmployee = () => {
 // allQuestions();
 // };
 
+// updateEmployeeRole
 // const updateEmployeeRole = () => {
 // allQuestions();
 // };
