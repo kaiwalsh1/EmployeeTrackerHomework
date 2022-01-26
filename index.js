@@ -68,15 +68,12 @@ const viewAllRoles = () => {
 
 // viewAllEmployees function
 const viewAllEmployees = () => {
-    db.query(`SELECT E.id, E.first_name AS 'First Name', E.last_name AS 'Last Name', R.title, D.name department, R.salary,
+    db.query(`SELECT employee.id, employee.first_name AS 'First Name', employee.last_name AS 'Last Name', R.title, D.name AS department, R.salary,
         CONCAT(manager_id.first_name, " ", manager_id.last_name) AS manager FROM employee
-        FROM employee E 
-        INNER JOIN role R ON E.role_id = R.id
+        INNER JOIN role R ON employee.role_id = R.id
         INNER JOIN department D ON R.department_id = D.id
-        INNER JOIN employee manager ON employee.manager_id = manager.id;
+        LEFT JOIN employee manager_id ON manager_id.id = employee.manager_id;
         `
-// still need to add manager name from employee Table
-//         CONCAT(manager.first_name, " ", manager.last_name) AS manager_id FROM employee
         , (err, result) => {
         if (err) { console.log(err) }
         console.table(result)
@@ -106,11 +103,13 @@ const addDepartment = () => {
 // addRole function
 const addRole = async () => {
     let roles = [];
-    let choices =
         db.promise().query(`SELECT * FROM department;`)
             .then(results => {
                 results[0].forEach(result => {
-                    roles.push(result.name);
+                    roles.push({
+                        name: result.name,
+                        value: result.id
+                    });
                 });
             })
             .catch(err => console.log(err));
@@ -129,7 +128,6 @@ const addRole = async () => {
         {
             type: 'list',
             message: 'Which department does the role belong to?',
-            // add choices or pull from 
             choices: roles,
             name: 'addToDept'
         }
@@ -137,19 +135,40 @@ const addRole = async () => {
     .then(answers => {
         const newRole = answers.addRole;
         const newRoleSalary = answers.addSalary;
-        const addRoleToDept = answers.addToDept;
-        db.query(`INSERT INTO role (name, salary, department_id) VALUES(?, ?, ?);`, [newRole, newRoleSalary, newRoleToDept], (err, result) => {
+        const newRoleToDept = answers.addToDept;
+        db.query(`INSERT INTO role (title, salary, department_id) VALUES(?, ?, ?);`, [newRole, newRoleSalary, newRoleToDept], (err, result) => {
             if(err) { console.log(err) }
         });
         allQuestions();
     });
 };
 
+// roles.push({
+//     name: result.name,
+//     value: result.id
+// });
+
 // addEmployee function
-const addEmployee = () => {
-    db.query(`SELECT * FROM role;`, (err, result) => {
-        if(err) { console.log(err) }
-    })
+const addEmployee = async () => {
+    let employees = [];
+    let manager = [];
+    let choices =
+        db.promise().query(`SELECT * FROM role;`)
+            .then(results => {
+                results[0].forEach(result => {
+                    employees.push(result.name);
+                });
+            })
+            .catch(err => console.log(err));
+    let choicesManager = 
+        db.promise().query(`SELECT first_name, last_name FROM employee WHERE manager_id IS NOT NULL;`)
+            .then(results => {
+                results[0].forEach(result => {
+                    manager.push(E.id, E.first_name + " " + E.last_name);
+                });
+            })
+            .catch(err => console.log(err));
+
     inquirer
     .prompt([
         {
@@ -165,13 +184,13 @@ const addEmployee = () => {
         {
             type: 'list',
             message: 'What is the employee\'s role?',
-            choices: [],
+            choices: employees,
             name: 'addEmployeeRole'
         },
         {
             type: 'list',
             message: 'Who is the employee\'s manager?',
-            choices: [],
+            choices: manager,
             name: 'addEmployeeMng'
         },
     ])
@@ -215,7 +234,6 @@ const updateEmployeeRole = () => {
         });
         allQuestions();
     });
-
 };
 
 allQuestions();
