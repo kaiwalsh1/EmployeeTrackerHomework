@@ -152,23 +152,31 @@ const addRole = async () => {
 const addEmployee = async () => {
     let employees = [];
     let manager = [];
-    let choices =
         db.promise().query(`SELECT * FROM role;`)
             .then(results => {
                 results[0].forEach(result => {
-                    employees.push(result.name);
+                    employees.push({
+                        title: result.title,
+                        value: result.title,
+                        id: result.id,
+                    });
                 });
             })
             .catch(err => console.log(err));
-    let choicesManager = 
+    // let choicesManager = 
         db.promise().query(`SELECT first_name, last_name FROM employee WHERE manager_id IS NOT NULL;`)
             .then(results => {
                 results[0].forEach(result => {
-                    manager.push(E.id, E.first_name + " " + E.last_name);
+                    manager.push({
+                        first_name: result.first_name,
+                        last_name: result.last_name,
+                        // manager_id: result.manager_id,
+                        value: result.manager_id,
+                    })
+                        // E.id, E.first_name + " " + E.last_name);
                 });
             })
             .catch(err => console.log(err));
-
     inquirer
     .prompt([
         {
