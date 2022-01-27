@@ -40,22 +40,15 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 ## Table of Contents
 - [Installation] (#Installation)
-- [Usage] (#Usage)
 - [Credits] (#Credits)
 
 ## Installation
 This application uses Node.js, Inquirer, console.table, and MySql
 
-## Usage
-
-
-
 ## Credits
-
+Google, tutor, help from CJ Sanders
 
 ## Walkthrough Video
 ![]()
 
-## Sources
-Google, tutor, help from CJ Sanders
 
