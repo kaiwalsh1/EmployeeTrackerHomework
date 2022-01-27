@@ -11,12 +11,6 @@ const db = mysql.createConnection({
     database: 'cms_db',
 });
 
-// const viewTable = ( table ) => {
-// 	console.log( '\n' );
-// 	console.table( table );
-// 	console.log( '\n' );
-// };
-
 // ALL QUESTIONS - ask what action the user wants to take
 const allQuestions = () => {
     inquirer
@@ -24,7 +18,7 @@ const allQuestions = () => {
             {
                 type: 'list',
                 message: 'What would you like to do?',
-                choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update an employee role'],
+                choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update an employee role', 'Delete a department'],
                 name: 'home'
             },
         ])
@@ -43,6 +37,8 @@ const allQuestions = () => {
                 addEmployee();
             } else if (answers.home === "Update an employee role") {
                 updateEmployeeRole();
+            } else if (answers.home === "Delete a department") {
+                deleteDepartment();
             }
         });
 };
@@ -58,7 +54,6 @@ const viewAllDepartments = () => {
 
 // viewAllRoles function
 const viewAllRoles = () => {
-    // db query request to get all the things from that
     db.query("SELECT R.id, R.title, R.salary, D.name AS department FROM role R INNER JOIN department D ON R.department_id = D.id;", (err, result) => {
         if (err) { console.log(err) }
         console.table(result)
@@ -166,7 +161,6 @@ const addEmployee = async () => {
                     name: result.first_name,
                     value: result.manager_id,
                 })
-                // E.id, E.first_name + " " + E.last_name);
             });
         })
         .catch(err => console.log(err));
@@ -260,6 +254,40 @@ const updateEmployeeRole = async () => {
                 })
         })
 };
+
+// DELETE role function
+const deleteDepartment = async () => {
+    var departments = [];
+    db.promise().query(`SELECT * FROM department;`)
+        .then(results => {
+            results[0].forEach(result => {
+                departments.push({
+                    name: result.name,
+                    value: result.id
+                });
+            });
+            return {departments}
+        }).then(roleList => {
+            console.log(roleList);
+            inquirer
+                .prompt([
+                    {
+                        type: 'list',
+                        message: 'Which department do you want to delete?',
+                        choices: roleList.departments,
+                        name: 'deleteDept'
+                    },
+                ])
+                .then(answers => {
+                    const deletedDept = answers.deleteDept;
+                    db.query(`DELETE FROM department WHERE name = ${deletedDept};`, (err, result) => {
+                        if (err) { console.log(err) };
+                    });
+                    allQuestions();
+                });
+        })
+}
+
 
 allQuestions();
 

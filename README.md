@@ -4,6 +4,8 @@ By: Kai Walsh
 ## Description
 Built a content management system from scratch using the command-line to manage a company's employee database using Node.js, Inquirer, and MySql.
 
+
+
 ## User Story
 AS A business owner
 I WANT to be able to view and manage the departments, roles, and employees in my company
@@ -34,7 +36,6 @@ THEN I am prompted to enter the employee’s first name, last name, role, and ma
 
 WHEN I choose to update an employee role
 THEN I am prompted to select an employee to update and their new role and this information is updated in the database
-
 
 
 ## Table of Contents
