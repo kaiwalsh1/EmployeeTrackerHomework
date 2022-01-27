@@ -2,7 +2,7 @@
 By: Kai Walsh
 
 ## Description
-Built a content management system from scratch using the command-line to manage a company's employee database using Node.js, Inquirer, and MySql.
+Built a content management system from scratch using the command-line to manage a company's employee database. This CMS allows you to view and interact with information stored in the database.
 
 
 
@@ -47,6 +47,8 @@ THEN I am prompted to select an employee to update and their new role and this i
 This application uses Node.js, Inquirer, console.table, and MySql
 
 ## Usage
+
+
 
 ## Credits
 

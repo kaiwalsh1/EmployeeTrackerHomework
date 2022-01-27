@@ -1,5 +1,5 @@
 const cTable = require('console.table');
-const res = require('express/lib/response');
+// const res = require('express/lib/response');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const util = require('util');
@@ -280,7 +280,8 @@ const deleteDepartment = async () => {
                 ])
                 .then(answers => {
                     const deletedDept = answers.deleteDept;
-                    db.query(`DELETE FROM department WHERE name = ${deletedDept};`, (err, result) => {
+                    console.log(deletedDept);
+                    db.query(`DELETE FROM department WHERE id = ${deletedDept};`, (err, result) => {
                         if (err) { console.log(err) };
                     });
                     allQuestions();
