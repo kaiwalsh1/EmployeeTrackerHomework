@@ -234,7 +234,6 @@ const updateEmployeeRole = async () => {
                     });
                     return { updateRole, updateEmployee }
                 }).then(updatedStuff => {
-                    console.log(updatedStuff);
                     inquirer
                         .prompt([
                             {
