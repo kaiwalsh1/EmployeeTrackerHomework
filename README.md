@@ -49,6 +49,6 @@ This application uses Node.js, Inquirer, console.table, and MySql
 Google, tutor, help from CJ Sanders
 
 ## Walkthrough Video
-![]()
+![walkthroughVid](./assets/EmployeeTrackerHomeworkVid2.gif)
 
 
